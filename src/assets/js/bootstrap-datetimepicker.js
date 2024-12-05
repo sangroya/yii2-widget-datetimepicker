@@ -527,7 +527,7 @@
 
         getFormattedDate: function (format) {
             format = format || this.format;
-            return DPGlobal.formatDate(this.date, format, this.language, this.formatType, this.timezone);
+            return DPGlobal.formatDate(this.date, format, this.language, this.formatType, this.timezone,this.minView);
         },
 
         setStartDate: function (startDate) {
@@ -1729,7 +1729,7 @@
             }
             return date;
         },
-        formatDate: function (date, format, language, type, timezone) {
+        formatDate: function (date, format, language, type, timezone, hideMinute) {
             if (date === null) {
                 return '';
             }
@@ -1816,7 +1816,10 @@
                 if (seps.length) {
                     date.push(seps.shift());
                 }
-                date.push(val[format.parts[i]]);
+                if(hideMinute && (format.parts[i]=="ii" || format.parts[i]=="i"))
+                    date.push("00");
+                else
+                    date.push(val[format.parts[i]]);
             }
             if (seps.length) {
                 date.push(seps.shift());
